@@ -9,9 +9,10 @@ import './bootstrap.min.css';
 // components
 import App from './App';
 
-//import reportWebVitals from './reportWebVitals';
 
-ReactDOM.render(
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+root.render(
     <App />,
     document.getElementById("root")
 );

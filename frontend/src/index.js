@@ -5,9 +5,11 @@ import ReactDOM from 'react-dom';
 // css
 import './index.css';
 import './bootstrap.min.css';
+
 // components
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+
+//import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
     <App />,

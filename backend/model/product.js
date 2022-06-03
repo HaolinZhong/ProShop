@@ -41,17 +41,17 @@ const productSchema = mongoose.Schema({
         default: 0
     },
     numReviews: {
-        type: String,
+        type: Number,
         required: true,
         default: 0
     },
     price: {
-        type: String,
+        type: Number,
         required: true,
         default: 0
     },
     countInStock: {
-        type: String,
+        type: Number,
         required: true,
         default: 0
     },

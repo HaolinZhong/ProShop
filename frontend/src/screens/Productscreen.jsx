@@ -19,7 +19,7 @@ const Productscreen = () => {
     dispatch(listProductDetails(params.id))
   }, [dispatch, params.id]);
 
-  const [qty, setQty] = useState(0)
+  const [qty, setQty] = useState(1)
 
   const addToCartHandler = () => {
     navigate(`/cart/${params.id}?qty=${qty}`)

@@ -66,8 +66,7 @@ const Productscreen = () => {
                       <Row>
                         <Col>Qty:</Col>
                         <Col>
-                          <Form.Control
-                            as='select'
+                          <Form.Select
                             value={qty} 
                             onChange={(e) => setQty(e.target.value)}>
                             {
@@ -75,7 +74,7 @@ const Productscreen = () => {
                                   return(<option key={x+1} value={x+1}>{x+1}</option>)
                                 })
                             }
-                          </Form.Control>
+                          </Form.Select>
                         </Col>
                       </Row>
                     </ListGroupItem>

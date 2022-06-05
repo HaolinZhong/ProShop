@@ -14,6 +14,6 @@ router.route("/")
 // @route   GET /api/products/:id
 // @access  Public
 router.route("/:id")
-    .get(getProductById())
+    .get(getProductById)
 
 export default router;

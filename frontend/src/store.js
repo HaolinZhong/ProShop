@@ -9,7 +9,7 @@ const reducer = combineReducers({
     productList: productListReducer,
     productDetails: productDetailReducer,
     cart: cartReducer,
-    user: userLoginReducer
+    userLogin: userLoginReducer
 })
 
 const cartItemsFromStorage = localStorage.getItem('cartItems') ? 

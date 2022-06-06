@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Col, Container, Form, FormControl, FormGroup, FormLabel, Row } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
-import { getUserDetails } from '../actions/userActions'
+import { getUserDetails, updateUserProfile } from '../actions/userActions'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
+import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants'
 
 const Profilescreen = () => {
 
@@ -17,6 +18,7 @@ const Profilescreen = () => {
     const [password, setPassword] = useState('')
     const [confPassword, setConfPassword] = useState('')
     const [message, setMessage] = useState('')
+    const [updated, setUpdated] = useState(false)
 
     const userDetails = useSelector(state => state.userDetails)
     const { loading, error, user } = userDetails
@@ -24,26 +26,40 @@ const Profilescreen = () => {
     const userLogin = useSelector(state => state.userLogin)
     const { userInfo } = userLogin
 
+    const userUpdateProfile = useSelector(state => state.userUpdateProfile)
+    const { success } = userUpdateProfile
+
     useEffect(() => {
         if (!userInfo) {
             navigate("/login")
-        } else {
-            if (!user.name) {
-                dispatch(getUserDetails('profile'))
-            } else {
-                setName(user.name)
-                setEmail(user.email)
-            }
+            return 
+        } 
+        
+        if ( !user || !user.name) {
+            dispatch(getUserDetails('profile'))
+            return
         }
-    }, [dispatch, navigate, userInfo, user])
+        
+        if (success) {
+            dispatch({type: USER_UPDATE_PROFILE_RESET})
+            dispatch(getUserDetails('profile'))
+            setUpdated(true)
+            return
+        }
+
+        setName(user.name)
+        setEmail(user.email)
+
+    }, [dispatch, navigate, userInfo, user, success])
 
     const submitHandler = (e) => {
         e.preventDefault()
+        setUpdated(false)
         if (password !== confPassword) {
             setMessage('Passwords do not match!')
         } else {
             setMessage('')
-            // dispatch update profile
+            dispatch(updateUserProfile({id: user._id, name, email, password}))
         }
     }
 
@@ -54,6 +70,7 @@ const Profilescreen = () => {
                     <h2 className='my-2'>Update Profile</h2>
                     {error && <Message variant='danger'>{error}</Message>}
                     {loading && <Loader />}
+                    {updated && <Message variant='success'>Profile Updated!</Message>}
                     <Form onSubmit={submitHandler} >
 
                         <FormGroup controlId='name' className='py-2'>

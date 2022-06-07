@@ -2,7 +2,7 @@ import React from 'react'
 import { Nav, NavItem, NavLink } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 
-const CheckoutSteps = (s1, s2, s3, s4) => {
+const CheckoutSteps = ({s1, s2, s3, s4}) => {
   return (
     <Nav className='justify-content-center mx-4 py-4'>
         <NavItem>

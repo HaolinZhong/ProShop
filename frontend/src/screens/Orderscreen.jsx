@@ -24,7 +24,7 @@ const Orderscreen = () => {
         if (!order || order._id !== orderId) {
             dispatch(getOrderDetails(orderId))
         }
-    }, [dispatch, orderId])
+    }, [dispatch, orderId, order])
 
 
     return (

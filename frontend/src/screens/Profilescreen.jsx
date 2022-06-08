@@ -56,7 +56,7 @@ const Profilescreen = () => {
         setName(user.name)
         setEmail(user.email)
 
-    }, [dispatch, navigate, userInfo, user, success, listMyorders, orders])
+    }, [dispatch, navigate, userInfo, user, success, orders])
 
     const submitHandler = (e) => {
         e.preventDefault()

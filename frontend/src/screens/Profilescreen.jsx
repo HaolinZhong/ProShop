@@ -133,6 +133,8 @@ const Profilescreen = () => {
                     <h2 className='my-2'>My Orders</h2>
                     {loadingOrders ? <Loader /> : errorOrders ? (
                         <Message variant='danger'>{errorOrders}</Message>
+                    ) : orders.length === 0 ? (
+                        <Message>You have no history orders.</Message>
                     ) : (
                         <Table striped bordered hover responsive className='table-sm my-3'>
                             <thead>

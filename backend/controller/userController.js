@@ -111,7 +111,7 @@ const updateUserProfile = expressAsyncHandler(async (req, res) => {
 // @route   GET /api/users
 // @access  Private/Admin
 const getUsers = expressAsyncHandler(async (req, res) => {
-    const user = await User.find({})
+    const users = await User.find({})
     res.json(users)
 })
 

@@ -3,10 +3,10 @@ import { Button, Col, Container, Row, Table } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { LinkContainer } from 'react-router-bootstrap'
-import { deleteUser, listUsers } from '../actions/userActions'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
-import { deleteProduct, listProducts } from '../actions/productActions'
+import { createProduct, deleteProduct, listProducts } from '../actions/productActions'
+import { PRODUCT_CREATE_RESET } from '../constants/productConstants'
 
 const Productlistscreen = () => {
     const dispatch = useDispatch()
@@ -16,19 +16,30 @@ const Productlistscreen = () => {
     const { loading, error, products } = productList
 
     const productDelete = useSelector(state => state.productDelete)
-    const { loading: loadingDelete, error: errorDelete, success } = productDelete
+    const { loading: loadingDelete, error: errorDelete, success: successDelete } = productDelete
+
+    const productCreate = useSelector(state => state.productCreate)
+    const { 
+        loading: loadingCreate, 
+        error: errorCreate, 
+        success: successCreate,
+        product: createdProduct
+    } = productCreate
 
     const userLogin = useSelector(state => state.userLogin)
     const { userInfo } = userLogin
 
     useEffect(() => {
-        if (userInfo && userInfo.isAdmin) {
-            dispatch(listProducts())
-        } else {
+        dispatch({ type: PRODUCT_CREATE_RESET })
+        if (!userInfo || !userInfo.isAdmin) {
             navigate('/login')
         }
-        dispatch(listUsers())
-    }, [dispatch, navigate, userInfo, success])
+        if (successCreate) {
+            navigate(`/admin/product/${createdProduct._id}/edit`)
+        } else {
+            dispatch(listProducts())
+        }
+    }, [dispatch, navigate, userInfo, successCreate, successDelete, createdProduct])
 
     const deleteHandler = (id) => {
         if (window.confirm('Are you sure you want to delete this product?')) {
@@ -36,8 +47,8 @@ const Productlistscreen = () => {
         }
     }
 
-    const createProductHandler = (product) => {
-        // create products
+    const createProductHandler = () => {
+        dispatch(createProduct())
     }
 
     return (
@@ -55,6 +66,8 @@ const Productlistscreen = () => {
             </Row>
             {loadingDelete && <Loader/>}
             {errorDelete && <Message variant='danger'>{errorDelete}</Message>}
+            {loadingCreate && <Loader/>}
+            {errorCreate && <Message variant='danger'>{errorDelete}</Message>}
             {loading ? <Loader /> : error ? (
                 <Message variant='danger'>{error}</Message>
             ) : (

@@ -57,7 +57,8 @@ const createProduct = expressAsyncHandler( async (req, res) => {
     })
 
     const createdProduct = await product.save()
-    res.status(201).json(createdProduct)
+    res.status(201)
+    res.json(createdProduct)
 })
 
 

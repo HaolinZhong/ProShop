@@ -60,7 +60,7 @@ const ProductEditscreen = () => {
     const uploadFileHandler = async (e) => {
         const file = e.target.files[0]
         if (!file.name.endsWith('.jpg' || '.jpeg' || '.png')) {
-            setErrUpload('Wrong file type: please upload .jpg, .jpeg or .png file')
+            setErrUpload('Wrong file type: please upload jpg, jpeg or png file')
             e.target.value = ''
             return
         }

@@ -4,7 +4,7 @@ import {composeWithDevTools} from "redux-devtools-extension";
 import { productCreateReducer, productDeleteReducer, productDetailReducer, productListReducer, productUpdateReducer } from "./reducers/productReducers";
 import { cartReducer } from "./reducers/cartReducers";
 import { adminUpdateProfileReducer, userDeleteReducer, userDetailsReducer, userListReducer, userLoginReducer, userRegisterReducer, userUpdateProfileReducer } from "./reducers/userReducers";
-import { orderCreateReducer, orderDetailsReducer, orderListAdminReducer, orderListReducer, orderPayReducer } from "./reducers/orderReducers";
+import { orderCreateReducer, orderDeliverReducer, orderDetailsReducer, orderListAdminReducer, orderListReducer, orderPayReducer } from "./reducers/orderReducers";
 
 const reducer = combineReducers({
     productList: productListReducer,
@@ -23,6 +23,7 @@ const reducer = combineReducers({
     orderCreate: orderCreateReducer,
     orderDetails: orderDetailsReducer,
     orderPay: orderPayReducer,
+    orderDeliver: orderDeliverReducer,
     orderList: orderListReducer,
     orderListAdmin: orderListAdminReducer,
 })

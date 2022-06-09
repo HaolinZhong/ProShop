@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { LinkContainer } from 'react-router-bootstrap'
 import { listOrders } from '../actions/orderActions'
-import { deleteUser, list } from '../actions/userActions'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 

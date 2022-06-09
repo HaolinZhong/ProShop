@@ -6,7 +6,8 @@ import { useNavigate, useParams } from 'react-router'
 import FormContainer from '../components/FormContainer'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { listProductDetails } from '../actions/productActions'
+import { listProductDetails, updateProduct } from '../actions/productActions'
+import { PRODUCT_UPDATE_RESET } from '../constants/productConstants'
 
 const ProductEditscreen = () => {
 
@@ -26,9 +27,16 @@ const ProductEditscreen = () => {
     const productDetails = useSelector((state) => state.productDetails)
     const { loading, error, product } = productDetails
 
+    const productUpdate = useSelector((state) => state.productUpdate)
+    const { loading: loadingUpdate, error: errorUpdate, success: successUpdate } = productUpdate
+
 
     useEffect(() => {
-
+        if (successUpdate) {
+            dispatch({ type: PRODUCT_UPDATE_RESET })
+            dispatch(listProductDetails(params.id))
+            navigate('/admin/productlist')
+        } else {
             if (!product.name || product._id !== params.id) {
                 dispatch(listProductDetails(params.id))
             } else {
@@ -40,15 +48,23 @@ const ProductEditscreen = () => {
                 setCountInStock(product.countInStock)
                 setDescription(product.description)
             }
-        
-    }, [dispatch, params, navigate, product])
+        }
+
+    }, [dispatch, params, navigate, product, successUpdate])
 
     const submitHandler = (e) => {
         e.preventDefault()
-        // update product
+        dispatch(updateProduct({
+            _id: params.id,
+            name,
+            price,
+            image,
+            brand,
+            category,
+            countInStock,
+            description,
+        }))
     }
-
-
 
     return (
         <Container>
@@ -57,6 +73,8 @@ const ProductEditscreen = () => {
             </Link>
             <FormContainer>
                 <h1 className='my-2'>Edit Product</h1>
+                {loadingUpdate && <Loader/>}
+                {errorUpdate && <Message variant='danger'>{errorUpdate}</Message>}
                 {loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> : (
                     <Form onSubmit={submitHandler}>
                         <FormGroup controlId='name' className='py-2'>
@@ -69,7 +87,7 @@ const ProductEditscreen = () => {
                             >
                             </FormControl>
                         </FormGroup>
-                        
+
                         <FormGroup controlId='price' className='py-2'>
                             <FormLabel>Price</FormLabel>
                             <FormControl

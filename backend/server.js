@@ -31,8 +31,6 @@ app.use("/uploads", express.static(path.join(__dirname, '/uploads')))
 app.use(notFound);
 app.use(errorHandler);
 
-
-
 app.get("/", (req, res) => {
     res.send("API is running");
 })

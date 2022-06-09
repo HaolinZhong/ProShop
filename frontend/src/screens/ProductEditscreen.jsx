@@ -8,6 +8,7 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { listProductDetails, updateProduct } from '../actions/productActions'
 import { PRODUCT_UPDATE_RESET } from '../constants/productConstants'
+import axios from 'axios'
 
 const ProductEditscreen = () => {
 
@@ -22,6 +23,8 @@ const ProductEditscreen = () => {
     const [category, setCategory] = useState('')
     const [countInStock, setCountInStock] = useState(0)
     const [description, setDescription] = useState('')
+    const [uploading, setUploading] = useState(false)
+    const [errUpload, setErrUpload] = useState('')
 
 
     const productDetails = useSelector((state) => state.productDetails)
@@ -30,6 +33,8 @@ const ProductEditscreen = () => {
     const productUpdate = useSelector((state) => state.productUpdate)
     const { loading: loadingUpdate, error: errorUpdate, success: successUpdate } = productUpdate
 
+    const userLogin = useSelector(state => state.userLogin)
+    const { userInfo } = userLogin
 
     useEffect(() => {
         if (successUpdate) {
@@ -52,6 +57,39 @@ const ProductEditscreen = () => {
 
     }, [dispatch, params, navigate, product, successUpdate])
 
+    const uploadFileHandler = async (e) => {
+        const file = e.target.files[0]
+        if (!file.name.endsWith('.jpg' || '.jpeg' || '.png')) {
+            setErrUpload('Wrong file type: please upload .jpg, .jpeg or .png file')
+            e.target.value = ''
+            return
+        }
+        setErrUpload('')
+        const formData = new FormData()
+        formData.append('image', file)
+        setUploading(true)
+        try {
+            const config = {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer ${userInfo.token}`
+                }
+            }
+
+            const { data, error: errorUpload } = await axios.post('/api/upload', formData, config)
+            if (errorUpload) {
+                setErrUpload(errorUpload)
+            } else {
+                setImage(data)
+            }
+                setUploading(false)
+            
+        } catch (error) {
+            console.error(error)
+            setUploading(false)
+        }
+    }
+
     const submitHandler = (e) => {
         e.preventDefault()
         dispatch(updateProduct({
@@ -73,7 +111,7 @@ const ProductEditscreen = () => {
             </Link>
             <FormContainer>
                 <h1 className='my-2'>Edit Product</h1>
-                {loadingUpdate && <Loader/>}
+                {loadingUpdate && <Loader />}
                 {errorUpdate && <Message variant='danger'>{errorUpdate}</Message>}
                 {loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> : (
                     <Form onSubmit={submitHandler}>
@@ -100,16 +138,24 @@ const ProductEditscreen = () => {
                         </FormGroup>
 
                         <FormGroup controlId='image' className='py-2'>
-                            <FormLabel>Image</FormLabel>
+                            <FormLabel>Image Url</FormLabel>
                             <FormControl
                                 type='text'
-                                placeholder='Enter image'
+                                placeholder='Enter image url'
                                 value={image}
                                 onChange={(e) => setImage(e.target.value)}
                             >
                             </FormControl>
                         </FormGroup>
-
+                        <Form.Group controlId="imageFile" className="py-2">
+                            <Form.Label>Use Local Image File</Form.Label>
+                            <Form.Control 
+                                type="file" 
+                                onChange={uploadFileHandler}
+                            />
+                        </Form.Group>
+                        {uploading && <Loader />}
+                        {errUpload && <Message variant='danger'>{errUpload}</Message>}
                         <FormGroup controlId='brand' className='py-2'>
                             <FormLabel>Brand</FormLabel>
                             <FormControl

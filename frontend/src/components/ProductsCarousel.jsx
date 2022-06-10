@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Carousel, Col, Container, Image, Row } from 'react-bootstrap'
+import { Carousel, Container, Image } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { listTopProducts } from '../actions/productActions'
@@ -20,7 +20,7 @@ const ProductsCarousel = () => {
     return (
 
         loading ? <Loader></Loader> : error ? <Message variant='danger'>{error}</Message> : (
-            <Container className='m-3'>
+            <Container className='p-4'>
                 <Carousel pause='hover' className='bg-dark'>
                     {products.map(product => (
                         <Carousel.Item key={product.id}>

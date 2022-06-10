@@ -9,6 +9,7 @@ import Message from '../components/Message'
 import { PRODUCT_CREATE_REVIEW_FAIL, PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants'
 import { listMyorders } from '../actions/orderActions'
 import Star from '../components/Star'
+import Meta from '../components/Meta'
 
 const Productscreen = () => {
   const params = useParams()
@@ -60,6 +61,7 @@ const Productscreen = () => {
       {loading ? <Loader /> : (
         error ? <Message variant='danger'>{error}</Message> : (
           <>
+            <Meta title={product.name}/>
             <Row>
               <Col md={6}>
                 <Image src={product.image} alt={product.name} fluid></Image>

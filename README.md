@@ -1,5 +1,5 @@
 # ProShop
-A full-stack eCommerce web application built with M(ongoDB)E(xpress)R(eact)N(ode.js).
+A full-stack eCommerce web application built with **M**(ongoDB)**E**(xpress)**R**(eact)**N**(ode.js).
 
 # Live Version
 https://proshop-by-hz.herokuapp.com/

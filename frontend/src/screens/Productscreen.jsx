@@ -40,7 +40,6 @@ const Productscreen = () => {
   const [qty, setQty] = useState(1)
   const [rating, setRating] = useState(0)
   const [comment, setComment] = useState('')
-  const [errorNotBought, setErrorNotBought] = useState('')
 
   const addToCartHandler = () => {
     navigate(`/cart/${params.id}?qty=${qty}`)
@@ -49,20 +48,6 @@ const Productscreen = () => {
   const submitHandler = (e) => {
     e.preventDefault()
     dispatch(listMyorders())
-    const hasBought = false
-    for (const order of orders) {
-      for (const item of order.orderItems) {
-        if (item._id === params.id){
-          hasBought = true
-        }
-      }
-    }
-    
-    if (!hasBought) {
-      setErrorNotBought('Sorry, please comment on the product after purchase.')
-      return
-    }
-
     dispatch(createProductReview(params.id, {
       rating,
       comment
@@ -155,7 +140,6 @@ const Productscreen = () => {
 
                   <ListGroupItem>
                     <h2 className='py-4'>Write a Customer Review</h2>
-                    {errorNotBought && <Message variant='danger'>{errorNotBought}</Message> }
                     {errorProductReview && (
                       <Message variant='danger'>{errorProductReview}</Message>
                     )}

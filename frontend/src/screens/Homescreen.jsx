@@ -5,17 +5,23 @@ import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { useDispatch, useSelector } from 'react-redux'
 import { listProducts } from '../actions/productActions'
+import { useParams } from 'react-router'
 
 const Homescreen = () => {
 
     const dispatch = useDispatch()
+    const params = useParams()
+
+    const keyword = params.keyword
+
+    console.log(keyword)
 
     const productList = useSelector(state => state.productList)
     const { loading, error, products } = productList
 
     useEffect(() => {
-        dispatch(listProducts())
-    }, [dispatch]);
+        dispatch(listProducts(keyword))
+    }, [dispatch, keyword]);
 
     return (
         <Container>

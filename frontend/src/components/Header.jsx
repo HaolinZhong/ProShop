@@ -4,6 +4,7 @@ import { Container, Navbar, Nav, NavDropdown } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout } from '../actions/userActions'
 import { useLocation, useNavigate } from 'react-router'
+import SearchBox from './SearchBox'
 
 const Header = () => {
 
@@ -28,6 +29,7 @@ const Header = () => {
                     </LinkContainer>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
+                        <SearchBox />
                         <Nav className="ms-auto">
                             <LinkContainer to="/cart">
                                 <Nav.Link active={location.pathname.endsWith('/cart')}>

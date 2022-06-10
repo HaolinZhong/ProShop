@@ -3,7 +3,7 @@ import { Button, Card, Col, Container, Image, ListGroup, ListGroupItem, Row } fr
 import { PayPalButton } from 'react-paypal-button-v2'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Navigate, useNavigate, useParams } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { deliverOrder, getOrderDetails, payOrder } from '../actions/orderActions'
@@ -45,7 +45,7 @@ const Orderscreen = () => {
             script.type = 'text/javascript'
             script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`
             script.async = true
-            script.onLoad = () => {
+            script.onload = () => {
                 setSdkReady(true)
             }
             document.body.appendChild(script)
@@ -58,8 +58,9 @@ const Orderscreen = () => {
         } else if (!order.isPaid) {
             if (!window.paypal) {
                 addPayPalScript()
+            } else {
+                setSdkReady(true)
             }
-            setSdkReady(true)
         }
     }, [dispatch, orderId, order, successPay, successDeliver])
 
@@ -105,7 +106,7 @@ const Orderscreen = () => {
                                 <h2 className="my-2">Order Items</h2>
                                 {order.orderItems.length === 0 ? <Message>Order is empty.</Message> : (
                                     <ListGroup variant='flush' className="my-2">
-                                        {cart.cartItems.map((item, index) => (
+                                        {order.orderItems.map((item, index) => (
                                             <ListGroupItem key={index} className="my-2">
                                                 <Row>
                                                     <Col md={1}>
@@ -158,7 +159,7 @@ const Orderscreen = () => {
                                         <Col>${order.totalPrice}</Col>
                                     </Row>
                                 </ListGroupItem>
-                                {!order.isPaid && (
+                                {!order.isPaid && order.user._id === userInfo._id && (
                                     <ListGroupItem>
                                         {loadingPay && <Loader />}
                                         {!sdkReady ? <Loader /> : (

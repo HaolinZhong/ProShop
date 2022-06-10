@@ -1,19 +1,23 @@
 import React, { useEffect } from 'react'
 import { Button, Col, Container, Row, Table } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import { LinkContainer } from 'react-router-bootstrap'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { createProduct, deleteProduct, listProducts } from '../actions/productActions'
 import { PRODUCT_CREATE_RESET } from '../constants/productConstants'
+import Paginate from '../components/Paginate'
 
 const Productlistscreen = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
+    const params = useParams()
+    const pageNumber = params.pageNumber || 1
+
     const productList = useSelector(state => state.productList)
-    const { loading, error, products } = productList
+    const { loading, error, products, page, pages } = productList
 
     const productDelete = useSelector(state => state.productDelete)
     const { loading: loadingDelete, error: errorDelete, success: successDelete } = productDelete
@@ -37,9 +41,9 @@ const Productlistscreen = () => {
         if (successCreate) {
             navigate(`/admin/product/${createdProduct._id}/edit`)
         } else {
-            dispatch(listProducts())
+            dispatch(listProducts('', pageNumber))
         }
-    }, [dispatch, navigate, userInfo, successCreate, successDelete, createdProduct])
+    }, [dispatch, navigate, userInfo, successCreate, successDelete, createdProduct, pageNumber])
 
     const deleteHandler = (id) => {
         if (window.confirm('Are you sure you want to delete this product?')) {
@@ -110,6 +114,7 @@ const Productlistscreen = () => {
                 </Table>
             )
             }
+            <Paginate pages={pages} page={page} useList={true}></Paginate>
         </Container>
     )
 }

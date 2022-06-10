@@ -39,10 +39,13 @@ function App() {
             <Route path='/cart' element={<Cartscreen />} />
             <Route path='/admin/userlist' element={<Userlistscreen />} />
             <Route path='/admin/user/:id/edit' element={<UserEditscreen/>} />
-            <Route path='/admin/productlist' element={<Productlistscreen />} />
+            <Route path='/admin/productlist' element={<Productlistscreen />} exact/>
+            <Route path='/admin/productlist/:pageNumber' element={<Productlistscreen exact/>} />
             <Route path='/admin/product/:id/edit' element={<ProductEditscreen/>} />
             <Route path='/admin/orderlist' element={<OrderListscreen />} />
-            <Route path='/search/:keyword' element={<Homescreen />} />
+            <Route path='/search/:keyword' element={<Homescreen />}  exact/>
+            <Route path='/page/:pageNumber' element={<Homescreen />} exact/>
+            <Route path='/search/:keyword/page/:pageNumber' element={<Homescreen />} />
           </Routes>
         </main>
         <Footer />

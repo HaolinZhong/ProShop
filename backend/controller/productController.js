@@ -1,6 +1,6 @@
 import expressAsyncHandler from "express-async-handler";
 import Product from "../model/product.js";
-
+import Order from "../model/order.js"
 
 // @desc    Fetch all products
 // @route   GET /api/products

@@ -66,6 +66,7 @@ const Orderscreen = () => {
 
     const successPaymentHandler = (paymentResult) => {
         dispatch(payOrder(orderId, paymentResult))
+        dispatch(getOrderDetails(orderId))
     }
 
     const deliverHandler = () => {
